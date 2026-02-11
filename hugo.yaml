@@ -21,13 +21,17 @@ menu:
     - name: Search
       weight: 1
       params:
-      type: search
+        type: search
     - name: Docs
       pageRef: /docs
       weight: 2
     - name: About
       pageRef: /about
       weight: 3
+    - name: Try TUNa
+      weight: 4
+      url: "https://chatgpt.com/g/g-6951b3241bb481a496af6617d5dc04b5-tuna"
+      params:
 
     - name: GitHub
       weight: 5
