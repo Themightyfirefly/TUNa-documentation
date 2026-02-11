@@ -1,0 +1,101 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TUNa Documentation – Chatbot Design</title>
+    <link>/docs/chatbot_design/</link>
+    <description>Recent content in Chatbot Design on TUNa Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    
+	  <atom:link href="/docs/chatbot_design/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Knowledge Format</title>
+      <link>/docs/chatbot_design/knowledge_format/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/chatbot_design/knowledge_format/</guid>
+      <description>
+        
+        
+        &lt;p&gt;The design of the knowledge base plays a central role in the reliability, efficiency, and maintainability of a chatbot. In TUNa, the knowledge base functions as the exclusive source of verified information and directly influences retrieval quality, response latency, and the likelihood of hallucinations. Consequently, the choice of knowledge formats is not only a matter of content representation but also a technical design decision with measurable effects on system behavior.&lt;/p&gt;
+&lt;p&gt;The main knowledge file format used in this project is Markdown. Markdown offers a strong balance between structural expressiveness and token efficiency. Headings, lists, and concise formatting provide clear semantic boundaries that improve retrieval precision while introducing minimal token overhead. Compared to other formatted documents, Markdown allows relevant sections to be embedded or retrieved with fewer overhead tokens, which positively affects inference speed and reduces context saturation. From a reliability perspective, the explicit structure of Markdown supports grounded responses by clearly separating definitions, procedures, and exceptions, thereby lowering the risk of hallucinations. In addition, Markdown files are easy to read, edit, and version controlable, making them highly maintainable in collaborative development settings, such as in this project.&lt;/p&gt;
+&lt;p&gt;PDF files are used selectively when information is only available in this format. From a technical standpoint, PDFs are suboptimal for language model based retrieval. They often contain dense paragraphs, repeated headers, or layout artifacts that increase high token usage without adding semantic value. This can negatively impact retrieval speed and reduce precision, as relevant information may be embedded within large text blocks. Furthermore, the lack of explicit semantic structure increases the risk that the model misinterprets or overgeneralizes content, potentially leading to hallucinations. Nevertheless, PDFs offer high reliability in terms of source authenticity and human-readability and are therefore retained when accuracy to the original document outweighs the disadvantages in efficiency and maintainability.&lt;/p&gt;
+&lt;p&gt;JSON represents a contrasting design choice, optimized for machine-readability and strict structural consistency. JSON is highly efficient for representing discrete entities, mappings, and metadata, enabling precise retrieval and minimizing ambiguity at the data level. When used appropriately, this format can reduce hallucinations caused by loosely phrased textual descriptions. However, JSON tends to be token-heavy due to repeated keys and syntax, which can increase context size and slow down inference when large datasets are involved. Moreover, JSON is less suitable for natural language explanations and is harder to maintain for nontechnical contributors, limiting its usefulness for procedural or advisory content.&lt;/p&gt;
+&lt;p&gt;Plain text files provide minimal syntactic overhead and can be token-efficient for very short or static information. However, the absence of explicit structure reduces retrieval reliability and makes it harder for the model to distinguish between different types of information, such as conditions, steps, or exceptions. This lack of structure increases the likelihood of ambiguous interpretation and therefore increases hallucinations in more complex queries. Plain text is also less maintainable for growing knowledge bases, as content organization relies entirely on manual conventions rather than formal structure.&lt;/p&gt;
+&lt;p&gt;In summary, the knowledge format choices in TUNa reflect a trade-off between efficiency, reliability, and maintainability. Markdown is the preferred format due to its favorable balance of readability, token efficiency, and structural clarity. PDFs are used only when required by the source, accepting reduced retrieval efficiency in exchange for authoritative accuracy. JSON and plain text are reserved for narrowly defined technical use cases where their specific advantages outweigh their limitations. This deliberate design contributes to stable model behavior, reduced hallucination risk, and scalable maintenance of the knowledge base.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>System Prompt</title>
+      <link>/docs/chatbot_design/prompt/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/chatbot_design/prompt/</guid>
+      <description>
+        
+        
+        &lt;p&gt;The target audience primarily uses natural language rather than structured prompting techniques. Consequently, user inputs are frequently concise or implicitly phrased (e.g., simply asking &amp;ldquo;registration&amp;rdquo; without further specification). Relying on the model to infer the correct intent from such sparse input significantly increases the risk of hallucination and misguidance [1]. By implementing different prompting techniques, the system tries to compensate for the ambiguity of natural language, actively interpreting vague queries to ensure robustness regardless of the initial input quality. This design choice aligns with recommendations from recent surveys on robust prompt engineering applications [2] [3] [4].&lt;/p&gt;
+&lt;h2&gt;Methodological Framework and Applied Techniques&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;methodological-framework-and-applied-techniques&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#methodological-framework-and-applied-techniques&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;To achieve this requisite robustness, the final system prompt was constructed by integrating several established methodological frameworks. Each component addresses a specific shortcoming identified in standard LLM interactions. First, to define the system&amp;rsquo;s behavior and boundaries, as seen in Figure 2, the prompt adopts the explicit persona of an &amp;ldquo;Institutional Assistant&amp;rdquo; (TUNa). While early iterations utilized a metaphorical &amp;ldquo;Friendly Fish&amp;rdquo; persona to establish rapport, the final design shifted towards a functional role. Research by Ayach et al. [3] and Wang [5] et al. suggests that explicit role-prompting helps LLMs maintain a consistent tone and effectively suppresses the generic, sometimes biased training data in favor of domain-specific constraints. By defining the assistant as &amp;ldquo;institutional&amp;rdquo; rather than purely &amp;ldquo;conversational&amp;rdquo;, the chatbot is primed to prioritize neutrality over agreeableness.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../behavioral_identity.png&#34; alt=&#34;Excerpt from Final System Prompt&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+Figure 2: Excerpt from Final System Prompt.
+&lt;/p&gt;
+&lt;p&gt;Second, to control the depth and precision of generated answers, the prompt structures its instructions according to &lt;strong&gt;Bloom’s Taxonomy&lt;/strong&gt; [6]. This hierarchical approach aligns with the &lt;strong&gt;Hierarchical Prompting Taxonomy (HPT)&lt;/strong&gt; proposed by Budagam et al. [7], which advocates adapting the prompting strategy based on task complexity, with an excerpt shown in Figure 3. Standard prompts often fail to distinguish between simple fact retrieval and complex application of rules. By explicitly commanding the model to categorize tasks, ranging from &amp;ldquo;Recall&amp;rdquo; (Level 1) for factual dates to &amp;ldquo;Application&amp;rdquo; (Level 4) for procedural guidance, the system can better tailor its reasoning process to the complexity of the user&amp;rsquo;s request.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../level_1_4.png&#34; alt=&#34;Excerpt from Final System Prompt&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+Figure 3: Excerpt from Final System Prompt.
+&lt;/p&gt;
+&lt;p&gt;Third, to mitigate hallucinations, the most highest risk in providing administrative advice, the prompt enforces a &lt;strong&gt;Chain-of-Verification (CoV)&lt;/strong&gt; protocol [8]. The CoV technique counteracts immediate generation by forcing a multi-step reasoning process. The model must first retrieve evidence, evaluate its relevance, and cross-check facts against the retrieval index before explicitly drafting a response.&lt;/p&gt;
+&lt;p&gt;Finally, addressing the inherent ambiguity of student queries, the system implements the &lt;strong&gt;CLAM framework&lt;/strong&gt; (Clarification for Ambiguous Questions) [9]. In standard interactions, models often guess the user&amp;rsquo;s intent to be helpful. The CLAM protocol acts like a gating mechanism where the model is explicitly forbidden from guessing. Instead, it must identify missing variables and ask targeted clarifying questions, as seen below in Figure 4.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../robustness.png&#34; alt=&#34;Excerpt from Final System Prompt&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+Figure 4: Excerpt from Final System Prompt.
+&lt;/p&gt;
+## The Iteration Process
+The development of the system prompt was not static but followed an iterative improvement process, evolving from a loose conversational baseline to a strict logic-driven instruction set.
+&lt;p&gt;&lt;strong&gt;Phase 1 (Baseline V1)&lt;/strong&gt; focused primarily on approachability. The &amp;ldquo;Friendly Fish&amp;rdquo; (shown in Figure 5) prompt used basic instruction tuning to create a welcoming atmosphere. However, during initial testing, this version lacked mechanisms to handle &amp;ldquo;Out-of-Distribution&amp;rdquo; (OOD) queries, often leading to plausible but incorrect advice when knowledge was missing:&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../tone.png&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+Figure 5: Excerpt from Final System Prompt.
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Phase 2 (Logic Injection)&lt;/strong&gt; addressed these failures by introducing explicit reasoning steps. The prompt was expanded to include &amp;ldquo;Negative Constraints&amp;rdquo; instructions defining what the model must &lt;strong&gt;not&lt;/strong&gt; do [10]. This phase strictly defined the boundary between verified retrieval and general conversation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Phase 3 (Safety Integration)&lt;/strong&gt; incorporated specific protocols for crisis detection. Drawing on ethical guidelines for LLM-based suicide intervention [11], the prompt was modified to strictly separate empathy from assistance. While the baseline V1 risked engaging in therapeutic role-play, which is ethically problematic for non-medical AI [12], the final V2 prompt, seen in Figure 6, enforces a &amp;ldquo;Dissociated Empathy&amp;rdquo; protocol. This ensures that crisis queries trigger an immediate &amp;ldquo;Stop-Sequence&amp;rdquo;, prioritizing user safety over conversational continuity.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../hallucination.png&#34; alt=&#34;&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+Figure 6: Excerpt from Final System Prompt.
+&lt;/p&gt;
+&lt;h2&gt;Impact on Model Behavior&lt;span class=&#34;hx:absolute hx:-mt-20&#34; id=&#34;impact-on-model-behavior&#34;&gt;&lt;/span&gt;
+    &lt;a href=&#34;#impact-on-model-behavior&#34; class=&#34;subheading-anchor&#34; aria-label=&#34;Permalink for this section&#34;&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;The transition from V1 to V2 resulted in distinct, observable shifts in model behavior. Regarding &lt;strong&gt;Ambiguity Handling&lt;/strong&gt;, whereas V1 tended to assume specific details for vague queries (e.g., assuming a standard deadline for all students), V2 correctly halts generation to request clarification, aligning with the CLAM protocol. In terms of &lt;strong&gt;Information Fidelity&lt;/strong&gt;, the enforcement of the CoV protocol significantly increased the system&amp;rsquo;s resistance to answering questions not covered by the RAG knowledge base. Finally, the implementation of safety guards ensured that the system maintains a supportive tone without crossing the boundary into unauthorized psychological counseling [13].&lt;/p&gt;
+&lt;h1&gt;References&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;[1]&lt;/strong&gt; - L. Huang et al., “A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions,” ACM Transactions on Information Systems, vol. 43, no. 2, pp. 1–55, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[2]&lt;/strong&gt; - P. Sahoo, A. K. Singh, S. Saha, V. Jain, S. Mondal, and A. Chadha, “A systematic survey of prompt engineering in large language models: Techniques and applications,” arXiv preprint arXiv:2402.07927, 2024.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[3]&lt;/strong&gt; - F. Ayach et al., “Generating proto-personas through prompt engineering: a case study on efficiency, effectiveness and empathy,” arXiv preprint arXiv:2507.08594, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[4]&lt;/strong&gt; -  T. Debnath, M. N. A. Siddiky, M. E. Rahman, P. Das, and A. K. Guha, “A comprehensive survey of prompt engineering techniques in large language models,” TechRxiv, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[5]&lt;/strong&gt; - R. Wang et al., “Role Prompting Guided Domain Adaptation with General Capability Preserve for Large Language Models,” in Findings of the Association for Computational Linguistics: NAACL 2024, K. Duh, H. Gomez, and S. Bethard, Eds., Mexico City, Mexico: Association for Computational Linguistics, June 2024, pp. 2243–2255. doi: 10.18653/v1/2024.findings-naacl.145.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[6]&lt;/strong&gt; - J. Jackson, “Higher order prompting: Applying Bloom’s revised taxonomy to the use of large language models in higher education,” Studies in Technology Enhanced Learning, vol. 4, no. 1, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[7]&lt;/strong&gt; - D. Budagam, K. Sankalp, A. Kumar, V. Jain, and A. Chadha, “Hierarchical prompting taxonomy: A universal evaluation framework for large language models,” arXiv preprint arXiv:2406.12644, 2024.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[8]&lt;/strong&gt; - S. Dhuliawala et al., “Chain-of-verification reduces hallucination in large language models,” in Findings of the association for computational linguistics: ACL 2024, 2024, pp. 3563–3578.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[9]&lt;/strong&gt; - L. Kuhn, Y. Gal, and S. Farquhar, “Clam: Selective clarification for ambiguous questions with generative language models,” arXiv preprint arXiv:2212.07769, 2022.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[10]&lt;/strong&gt; - Y. Ban, R. Wang, T. Zhou, M. Cheng, B. Gong, and C.-J. Hsieh, “Understanding the Impact of Negative Prompts: When and How Do They Take Effect?,” in european conference on computer vision, 2024, pp. 190–206.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[11]&lt;/strong&gt; - G. Holmes, B. Tang, S. Gupta, S. Venkatesh, H. Christensen, and A. Whitton, “Applications of large language models in the field of suicide prevention: Scoping review,” Journal of Medical Internet Research, vol. 27, p. e63126, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[12]&lt;/strong&gt; - M. Ostermann, O. Freyer, F. G. Verhees, J. N. Kather, and S. Gilbert, “If a therapy bot walks like a duck and talks like a duck then it is a medically regulated duck,” npj Digital Medicine, vol. 8, no. 1, p. 741, 2025.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;[13]&lt;/strong&gt; - A. M. Schoene and C. Canca, “For Argument&amp;rsquo;s Sake, Show Me How to Harm Myself!&amp;rsquo;: Jailbreaking LLMs in Suicide and Self-Harm Contexts,” arXiv preprint arXiv:2507.02990, 2025.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

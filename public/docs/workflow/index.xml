@@ -1,0 +1,138 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TUNa Documentation – Workflow Design</title>
+    <link>/docs/workflow/</link>
+    <description>Recent content in Workflow Design on TUNa Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    
+	  <atom:link href="/docs/workflow/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>General GitHub Setup</title>
+      <link>/docs/workflow/general_github_setup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/general_github_setup/</guid>
+      <description>
+        
+        
+        &lt;p&gt;We quickly realised the value of version control. Even small changes in prompts and knowledge files can affect the quality of the chatbot answers. Using git as version control allows us to track all changes and revert to older versions in case the performance declines. A great help during the work with local git is the &lt;a href=&#34;https://git-scm.com/about&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;online git documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To enable cooperative work on the chatbot sources and provide an easy to use webinterface we used GitHub as a git server provider. We have created a &lt;a href=&#34;https://github.com/Themightyfirefly/TUna&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;TUNa repository&lt;/a&gt; that allows every contributer to pull the newest sources and push additional knowledge or other changes from their local computer to the server for everyone to use. Additionally, README files within the repository provide extra information on how to use the provided tools.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>GitHub Workflow</title>
+      <link>/docs/workflow/github_workflow/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/github_workflow/</guid>
+      <description>
+        
+        
+        &lt;p&gt;The GitHub server allows the creation of workflow files that automatically execute on certain events. We utilise this tool to generate the actual knowledge files that are to be uploaded to the Custom GPT. Once changes are pushed to the server, the custom workflow will execute the tools discussed in the following chapters. All executed workflows can be seen in the &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/actions&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub Actions tab&lt;/a&gt; in the repository (see below). By clicking on the most recent execution of the workflow we can see the chatbot knowledge that was created by the last execution of the workflow. All users with collaboration access to the TUNa repository can download the chatbot knowledge as a zip archive. Other users can access the knowledge through the &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/releases/tag/v1.0.0_final_stable&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;final TUNa release&lt;/a&gt; on GitHub.&lt;/p&gt;
+&lt;p&gt;After obtaining the knowledge zip archive, users can extract the archive and directly upload all knowledge files to the custom GPT. We recommend to delete and upload all knowledge files after any changes, as it ensures that all changes are included and prevents unexpected behaviour.&lt;/p&gt;
+&lt;p&gt;
+    &lt;img src=&#34;../GitHub_Actions.png&#34; alt=&#34;Actions tab in the TUNa GitHub repository&#34;  loading=&#34;lazy&#34; /&gt;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Chatbot Settings and Prompt Deployment</title>
+      <link>/docs/workflow/chatbot_settings_and_prompt_deployment/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/chatbot_settings_and_prompt_deployment/</guid>
+      <description>
+        
+        
+        &lt;p&gt;The chatbot settings can be found in the &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/blob/main/General_Settings.md&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;General_Settings.md&lt;/a&gt; file. These settings have to be copied line by line, as there is no automatic upload in the online GPT editor.&lt;/p&gt;
+&lt;p&gt;The prompt, discussed in detail in the System Prompt section, can be found in the &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/tree/main/system_prompt&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;system_prompt&lt;/a&gt; directory. The prompt must be copied into the online editor, just like the general settings.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Knowledge File Gathering</title>
+      <link>/docs/workflow/knowledge_file_gathering/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/knowledge_file_gathering/</guid>
+      <description>
+        
+        
+        &lt;p&gt;The previously discussed workflow gathers knowledge files and provides them as a combined zip archive. In order to do so, it follows these rules:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Gather all file paths within the &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/tree/main/Knowledge&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;strong&gt;Knowledge directory&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Exclude python files&lt;/strong&gt; and their requirements.txt files&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Exclude files or directories&lt;/strong&gt; with the following keywords in their name or path
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;&lt;strong&gt;combine_&lt;/strong&gt;&amp;rdquo;, as such directories will be used for pdf combining.&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;&lt;strong&gt;survey&lt;/strong&gt;&amp;rdquo;, as any survey related documents should not be part of the knowledge&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;&lt;strong&gt;StuPos&lt;/strong&gt;&amp;rdquo;, as the generated combined StuPo is currently too large&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This leaves the workflow with all of our markdown, pdf and json files which it can copy into a temporary directory. The directory with all of these knowledge files is then uploaded as an artifact and provided as a download to the user within the GitHub actions tab.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>StuPo Crawler</title>
+      <link>/docs/workflow/stupo_crawler/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/stupo_crawler/</guid>
+      <description>
+        
+        
+        &lt;p&gt;We have utilised the python package &lt;a href=&#34;https://beautiful-soup-4.readthedocs.io/en/latest/&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;beautiful soup&lt;/a&gt; in order to automatically get information on all of the study programs. There are 144 study programs at the TU Berlin. Adding each of the study programs including any kind of detailed information by hand to the knowledge is not achievable in the extend of one semester. The python crawler that we have written allows us to scan through the list of study programs and gather information to each of them. It extracts the links to the study program websites and scans through them to find any kind of useful text. The script tries to maintain the structure of the webpage as well as possible, while combining the information of all study program websites in one markdown file. This markdown file is seperated by headings with the names of the study programs.&lt;/p&gt;
+&lt;p&gt;The GitHub workflow executes the python crawler and uploads the generated markdown file. The crawler also downloads all available StuPOs and combines them into one large pdf. Unfortunately, the file is too large which leads to the chatbot hallucinating instead of properly accessing the correct StuPo. Future work could investigate how indexing can be used to improve the use of very large knowledge files. Due to the time constraint we decided to not persue this issue and to not include the StuPO pdf in our knowledge. This is why the workflow ignores the combined StuPO pdf file and does not upload it.&lt;/p&gt;
+&lt;p&gt;Utilising crawlers or scrapers to gather knowledge files plays a large role in the maintainability of a knowledge base. Eventually information will change. Having the option to gather all current information from the TUB websites by the press of a button is hugely beneficial to the maintainers of a chatbot.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>PDF File Combination</title>
+      <link>/docs/workflow/pdf_file_combination/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/pdf_file_combination/</guid>
+      <description>
+        
+        
+        &lt;p&gt;To aid flexibility and maintainability of the gathered pdf resources, we created a &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/blob/main/General_Scripts/combine_pdfs.py&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;python script&lt;/a&gt; that combines all pdf files within a given directory. Inside the script, a maximum file size is defined. This can be used to prevent knowledge files from getting too large. The script will combine all pdf files in the given directory into as few files as possible while maintaining the maximum file size.&lt;/p&gt;
+&lt;p&gt;The script is executed by the GitHub workflow, which applies the script to all directories that include &amp;ldquo;combine_&amp;rdquo; in their name. An example for how to utilise this tool can be found in the Erasmus knowledge. Here, brochures including all faculties&amp;rsquo; exchange cooperations have been downloaded from the TU Berlin website and copied into a directory called &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/tree/main/Knowledge/Exchange_Students/combine_Incoming_Erasmus_Brochure&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;combine_Incoming_Erasmus_Brochure&lt;/a&gt;. On execution the GitHub workflow will combine all of these brochures into one pdf file called &amp;ldquo;Incoming_Erasmus_Brochure.pdf&amp;rdquo;. By utilising this tool, we are able to reduce the number of knowledge files, while keeping the pdf knowledge files customisable.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Future Use of the GitHub project</title>
+      <link>/docs/workflow/future_use/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/workflow/future_use/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Additionally to the knowledge, the &lt;a href=&#34;https://github.com/Themightyfirefly/TUna/releases/tag/v1.0.0_final_stable&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;final TUNa release&lt;/a&gt; on GitHub also includes the project sources. These sources can be used by future project groups to further work on the chatbot or to create new chatbots.&lt;/p&gt;
+&lt;p&gt;Should future project groups decide to build upon the existing project and plan to use GitHub, they can also &lt;a href=&#34;https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;fork&lt;/a&gt; the TUNa repository, which will enable the direct execution of the TUNa workflow without the need for additional setup steps.&lt;/p&gt;
+&lt;p&gt;The information regarding chatbot development included in this documentation has also been made available through the TUNa website at &lt;a href=&#34;https://themightyfirefly.github.io/TUNa-documentation/.&#34;target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;https://themightyfirefly.github.io/TUNa-documentation/&lt;/a&gt;. As the website is directly linked in the main README file inside the TUNa GitHub repository, it allows future project groups to quickly access information regarding the developement of the chatbot. We want to provide the knowledge we have gained throughout the development of TUNa, so that future project groups can build upon our chatbot and the methods we have utilised.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>
