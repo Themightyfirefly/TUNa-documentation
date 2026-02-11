@@ -1,18 +1,18 @@
 ---
-title: Documentation
-next: first-page
+next: introduction
 ---
 
-This is a demo of the theme's documentation layout.
+{{< cards >}}
+  {{< card link="introduction" title="Introduction" icon="book-open" >}}
+  {{< card link="chatbot_design" title="Chatbot Design" icon="beaker" >}}
+  {{< card link="workflow" title="Workflow Design" icon="cog" >}}
+{{< /cards >}}
 
-## Hello, World!
 
-```go {filename="main.go"}
-package main
+This is the TUNa online documentation. TUNa is a chatbot for TU Berlin students to help them with any questions related to their studies.
 
-import "fmt"
 
-func main() {
-    fmt.Println("Hello, World!")
-}
-```
+
+The chatbot was developed as part of the "Introduction to Prompt Engineering" at TU Berlin.
+
+![TUNa](../ezgif-81d8d18da8b4dc12.gif)

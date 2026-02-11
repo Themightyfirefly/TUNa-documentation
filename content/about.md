@@ -3,4 +3,4 @@ title: About
 type: about
 ---
 
-This is the about page.
+The TUNa chatbot was developed as part of the "Introduction to Prompt Engineering" at TU Berlin.
