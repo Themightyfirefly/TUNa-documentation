@@ -1,6 +1,7 @@
 ---
 title: Introduction
 next: docs/chatbot_design
+type: docs
 weight: 1
 ---
 
